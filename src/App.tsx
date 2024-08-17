@@ -6,7 +6,6 @@ import { EditToDo, ToDo } from "./model";
 import ToDoListView from "./components/ToDoListView/ToDoListView";
 const App: React.FC = () => {
   const [form] = Form.useForm();
-
   const [toDoList, setToDoList] = useState<ToDo[]>([]);
   const [editTodo, setEditTodo] = useState<EditToDo>({
     id: "",
@@ -15,7 +14,6 @@ const App: React.FC = () => {
   });
 
   const onFinish = (values: { todo: string }) => {
-    console.log("Success:", values);
     if (editTodo.edit) {
       const updateTodos = [...toDoList].map((todo) => {
         if (todo.id === editTodo.id) {
@@ -24,26 +22,23 @@ const App: React.FC = () => {
         return todo;
       });
       setToDoList(updateTodos);
-      setEditTodo(
+      setEditTodo({
+        id: "",
+        todo: "",
+        edit: false,
+      });
+    } else {
+      setToDoList([
+        ...toDoList,
         {
-          id: "",
-          todo: "",
-          edit: false,
-        }
-      )
-    }
-    else{
-  setToDoList([
-      ...toDoList,
-      {
-        id: Date.now(),
-        todo: values.todo,
-        isDone: false,
-      },
-    ]);
+          id: Date.now(),
+          todo: values.todo,
+          isDone: false,
+        },
+      ]);
     }
 
- form.resetFields();
+    form.resetFields();
   };
 
   const updateTodo = (todoId: string | number, value: string) => {
@@ -68,12 +63,11 @@ const App: React.FC = () => {
     });
     setToDoList(updateTodos);
   };
-  console.log(toDoList);
 
   return (
     <div className="app-container">
       <h1 className="heading">Taskify</h1>
-      <TaskForm onFinish={onFinish} form={form} editTodo={editTodo}/>
+      <TaskForm onFinish={onFinish} form={form} editTodo={editTodo} />
       <ToDoListView
         toDoList={toDoList}
         removeTodo={removeTodo}
