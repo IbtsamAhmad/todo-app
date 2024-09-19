@@ -4,7 +4,7 @@ const {
   saveTodo,
   updateTodo,
   deleteTodo,
-} = require("../controllers/todoControllers");
+} = require("../controllers/sqlTodoController");
 const router = express.Router();
 
 router.get("/", getTodos);
